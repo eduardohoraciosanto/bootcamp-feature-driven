@@ -1,0 +1,42 @@
+version: "3.7"
+
+services:
+    service:
+        image: cart-service
+        env_file: .env
+        build:
+            target: builder
+            context: .
+        ports:
+            - 28080:8080
+        volumes:
+            - ./:/go/src/github.com/eduardohoraciosanto/bootcamp-feature-driven
+            - swagger:/go/src/github.com/eduardohoraciosanto/bootcamp-feature-driven/swagger
+            - ./oas/oas.yml:/go/src/github.com/eduardohoraciosanto/bootcamp-feature-driven/swagger/swagger.yml
+        command: gowatch -p ./cmd/api
+        depends_on:
+            - redis
+            - swagger
+            - datadog-agent
+    redis:
+        image: redis
+        restart: always
+        ports:
+            - 16379:6379
+    swagger:
+        image: swaggerapi/swagger-ui:v3.23.10
+        environment:
+            URL: /swagger/swagger.yml
+        volumes:
+            - swagger:/usr/share/nginx/html
+    datadog-agent:
+        image: datadog/agent:latest
+        env_file: .env
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+            - /proc/:/host/proc/:ro
+            - /opt/datadog-agent/run:/opt/datadog-agent/run:rw
+            - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
+volumes:
+    #swagger named volume will be shared between service and swagger. So we can have a local swagger running
+    swagger: null

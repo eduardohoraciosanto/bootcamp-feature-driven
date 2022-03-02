@@ -1,0 +1,436 @@
+openapi: "3.0.0"
+info:
+  title: Go Bootcamp Cart API
+  description: Microservice to manage Carts
+  version: 1.0.0
+  contact:
+    name: Eduardo Santo
+    url: https://github.com/eduardohoraciosanto
+
+servers:
+  - url: "http://localhost:18080"
+    description: Local Environment
+paths:
+  /health:
+    get:
+      tags:
+        - Health
+      summary: Health endpoint shows whether server and dependencies are running ok
+      responses:
+        "200":
+          description: Health Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /cart:
+    post:
+      tags:
+        - Cart
+      summary: Create a Cart
+      responses:
+        "200":
+          description: Cart Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CartResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /cart/{cart_id}:
+    get:
+      tags:
+        - Cart
+      summary: Get a Cart
+      parameters:
+        - in: path
+          name: cart_id
+          schema:
+            type: string
+          required: true
+          description: Unique ID of the Cart to get
+      responses:
+        "200":
+          description: Cart Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CartResponse"
+        "404":
+          description: Cart Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      tags:
+        - Cart
+      summary: Delete a Cart
+      parameters:
+        - in: path
+          name: cart_id
+          schema:
+            type: string
+          required: true
+          description: Unique ID of the Cart to delete
+      responses:
+        "202":
+          description: Cart Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteCartResponse"
+        "404":
+          description: Cart Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /cart/{cart_id}/item:
+    post:
+      tags:
+        - Item
+      summary: Add Item to a Cart
+      parameters:
+        - in: path
+          name: cart_id
+          schema:
+            type: string
+          required: true
+          description: Unique ID of the Cart to put the item on
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddItemRequest"
+      responses:
+        "200":
+          description: Cart Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CartResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Cart Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /cart/{cart_id}/item/{item_id}:
+    put:
+      tags:
+        - Item
+      summary: Modify Item quantity on Cart
+      parameters:
+        - in: path
+          name: cart_id
+          schema:
+            type: string
+          required: true
+          description: Unique ID of the Cart to modify the item of
+        - in: path
+          name: item_id
+          schema:
+            type: string
+          required: true
+          description: Unique ID of the Item to modify the quantity of
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ModifyItemRequest"
+      responses:
+        "200":
+          description: Cart Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CartResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Cart/Item Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      tags:
+        - Item
+      summary: Delete Item from Cart
+      parameters:
+        - in: path
+          name: cart_id
+          schema:
+            type: string
+          required: true
+          description: Unique ID of the Cart to delete the item from
+        - in: path
+          name: item_id
+          schema:
+            type: string
+          required: true
+          description: Unique ID of the Item to delete
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ModifyItemRequest"
+      responses:
+        "200":
+          description: Cart Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CartResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Cart/Item Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /cart/{cart_id}/item/all:
+    delete:
+      tags:
+        - Item
+      summary: Delete all Items from a Cart
+      parameters:
+        - in: path
+          name: cart_id
+          schema:
+            type: string
+          required: true
+          description: Unique ID of the Cart to delete all the items from
+      responses:
+        "200":
+          description: Cart Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CartResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Cart/Item Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /items:
+    get:
+      tags:
+        - Item
+      summary: Get all available items from external provider
+      responses:
+        "200":
+          description: All Items Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetAllItemsResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /items/{item_id}:
+    get:
+      tags:
+        - Item
+      summary: Get a particular item from external provider
+      parameters:
+        - in: path
+          name: item_id
+          schema:
+            type: string
+          required: true
+          description: Unique ID of the Item to get from the provider
+      responses:
+        "200":
+          description: Item Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetItemResponse"
+        "404":
+          description: Item Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+components:
+  schemas:
+    Meta:
+      properties:
+        version:
+          type: string
+    Error:
+      properties:
+        code:
+          type: string
+        description:
+          type: string
+    ErrorResponse:
+      properties:
+        meta:
+          $ref: "#/components/schemas/Meta"
+        error:
+          $ref: "#/components/schemas/Error"
+    Item:
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        quantity:
+          type: integer
+        price:
+          type: number
+          format: float
+    Cart:
+      properties:
+        id:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/Item"
+    CartResponse:
+      properties:
+        meta:
+          $ref: "#/components/schemas/Meta"
+        data:
+          properties:
+            cart:
+              $ref: "#/components/schemas/Cart"
+    DeleteCartResponse:
+      properties:
+        meta:
+          $ref: "#/components/schemas/Meta"
+    HealthData:
+      properties:
+        name:
+          type: string
+        alive:
+          type: boolean
+    HealthResponse:
+      properties:
+        meta:
+          $ref: "#/components/schemas/Meta"
+        data:
+          properties:
+            services:
+              type: array
+              items:
+                $ref: "#/components/schemas/HealthData"
+    AddItemRequest:
+      properties:
+        id:
+          description: The unique ID of the item to put in the Cart
+          type: string
+        quantity:
+          description: Amount of item to put in the Cart
+          type: integer
+    ModifyItemRequest:
+      properties:
+        quantity:
+          description: Amount of item to put in the Cart
+          type: integer
+    GetAllItemsResponse:
+      properties:
+        meta:
+          $ref: "#/components/schemas/Meta"
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Item"
+    GetItemResponse:
+      properties:
+        meta:
+          $ref: "#/components/schemas/Meta"
+        data:
+          $ref: "#/components/schemas/Item"
+
+tags:
+  - name: Health
+    description: Health Endpoint
+  - name: Cart
+    description: Cart related Endpoint
+  - name: Item
+    description: Item related Endpoint
