@@ -25,7 +25,8 @@ func main() {
 
 	conf := config.New()
 
-	l := logger.NewLogger(conf.JSONLogs, "shopping cart api")
+	l := logger.NewLogger("shopping cart api")
+
 	redisClient := redis.NewClient(&redis.Options{
 		Addr:     conf.RedisServer,
 		Password: conf.RedisPassword,

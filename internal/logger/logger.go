@@ -2,10 +2,10 @@ package logger
 
 import (
 	"context"
-	"reflect"
 	"runtime/debug"
 
-	"github.com/sirupsen/logrus"
+	"github.com/eduardohoraciosanto/bootcamp-feature-driven/internal/config"
+	"go.uber.org/zap"
 	"gopkg.in/DataDog/dd-trace-go.v1/ddtrace/tracer"
 )
 
@@ -16,61 +16,84 @@ type Logger interface {
 	Warn(ctx context.Context, message string)
 	WithField(key string, value interface{}) Logger
 	WithError(err error) Logger
+	Sync() error
 }
 
 type logger struct {
-	log *logrus.Entry
+	internal *zap.SugaredLogger
 }
 
-func NewLogger(jsonFormatted bool, service string) Logger {
-	l := logrus.New()
-	if jsonFormatted {
-		l.SetFormatter(&logrus.JSONFormatter{})
-	} else {
-		l.SetFormatter(&logrus.TextFormatter{})
+// NewLogger initializes de logger and allows the usage of the Logger Interface
+// user MUST defer the call to Sync() immediately afterwards.
+
+func NewLogger(service string) Logger {
+	l, err := zap.NewProduction()
+	if err != nil {
+		panic("unable to initialize logger: " + err.Error())
 	}
 
 	return &logger{
-		log: l.WithField("log_svc", service),
+		internal: l.WithOptions(zap.AddCallerSkip(1)).Sugar().
+			With("version", config.GetVersion()).
+			With("service", service),
 	}
 }
 
+// Sync MUST be defered to flush any buffered logs prior to shutting down the application.
+func (l *logger) Sync() error {
+	return l.internal.Sync()
+}
+
+// Info allows for a message with info lever to be logged
 func (l *logger) Info(ctx context.Context, message string) {
-	l.injectTracingInfo(ctx).Info(message)
+	l.injectTracing(ctx).Info(message)
 }
+
+// Error allows for a message with error lever to be logged
 func (l *logger) Error(ctx context.Context, message string) {
-	l.injectTracingInfo(ctx).WithField("dd.error.msg", message).Error(message)
+	l.injectTracing(ctx).Error(message)
 }
+
+// Debug allows for a message with debug lever to be logged
 func (l *logger) Debug(ctx context.Context, message string) {
-	l.injectTracingInfo(ctx).Debug(message)
+	l.injectTracing(ctx).Debug(message)
 }
+
+// Warn allows for a message with warn lever to be logged
 func (l *logger) Warn(ctx context.Context, message string) {
-	l.injectTracingInfo(ctx).Warn(message)
+	l.injectTracing(ctx).Warn(message)
 }
+
+// WithField allows for the inclusion of a key-value into the log
 func (l *logger) WithField(key string, value interface{}) Logger {
 	return &logger{
-		log: l.log.WithField(key, value),
-	}
-}
-func (l *logger) WithError(err error) Logger {
-	return &logger{
-		log: l.log.WithField("dd.error.type", reflect.TypeOf(err)).
-			WithField("dd.error.stack", string(debug.Stack())).WithField("error", err),
+		internal: l.internal.With(key, value),
 	}
 }
 
-func (l *logger) injectTracingInfo(ctx context.Context) *logrus.Entry {
+// WithError allows for the inclusion of an error into the log. It also populates DDog stack field
+func (l *logger) WithError(err error) Logger {
+	return &logger{
+		internal: l.internal.With(
+			"dd.error.stack", string(debug.Stack()),
+			"error", err,
+		),
+	}
+}
+
+// injectTracing enters correlation ID, if any, and DDog tracing information into the log.
+func (l *logger) injectTracing(ctx context.Context) *zap.SugaredLogger {
 	//add our correlation id if present
 	cid := ctx.Value("correlation_id")
-	entry := l.log
+	entry := l.internal
 	if cid != nil {
-		entry = entry.WithField("correlation_id", ctx.Value("correlation_id"))
+		entry = entry.With("correlation_id", ctx.Value("correlation_id"))
 	}
 
 	//add datadog information if available
 	if span, ok := tracer.SpanFromContext(ctx); ok {
-		entry = entry.WithField("dd.trace_id", span.Context().TraceID()).
-			WithField("dd.span_id", span.Context().SpanID())
+		entry = entry.With("dd.trace_id", span.Context().TraceID()).
+			With("dd.span_id", span.Context().SpanID())
 	}
 
 	return entry

@@ -9,5 +9,6 @@ require (
 	github.com/gorilla/mux v1.8.0
 	github.com/opentracing/opentracing-go v1.2.0 // indirect
 	github.com/sirupsen/logrus v1.8.1
+	go.uber.org/zap v1.21.0
 	gopkg.in/DataDog/dd-trace-go.v1 v1.36.2
 )

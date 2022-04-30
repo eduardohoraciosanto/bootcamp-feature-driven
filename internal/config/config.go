@@ -11,14 +11,12 @@ const (
 	redisServerKey   = "REDIS_SERVER"
 	redisPasswordKey = "REDIS_PASSWORD"
 	port             = "HTTP_PORT"
-	jsonLogs         = "JSON_LOGS"
 )
 
 type Config struct {
 	RedisServer   string
 	RedisPassword string
 	Port          string
-	JSONLogs      bool
 }
 
 func New() Config {
@@ -26,7 +24,6 @@ func New() Config {
 		RedisServer:   GetEnvString(redisServerKey, ""),
 		RedisPassword: GetEnvString(redisPasswordKey, ""),
 		Port:          GetEnvString(port, "8080"),
-		JSONLogs:      GetEnvBool(jsonLogs, false),
 	}
 }
 
