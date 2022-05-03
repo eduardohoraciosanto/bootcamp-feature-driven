@@ -16,12 +16,13 @@ RUN git clone https://github.com/swagger-api/swagger-ui && \
 WORKDIR /go/src/github.com/eduardohoraciosanto/bootcamp-feature-driven
 COPY . .
 
+RUN go mod tidy
 RUN GIT_COMMIT=$(git rev-parse --short HEAD) && \
-  go build -o service -ldflags "-X 'github.com/eduardohoraciosanto/bootcamp-feature-driven/internal/config.serviceVersion=$GIT_COMMIT'" ./cmd/api
+  go build -o service -ldflags "-X 'github.com/eduardohoraciosanto/bootcamp-feature-driven/internal/config.serviceVersion=$GIT_COMMIT'"
 
 FROM alpine:3.13 
 
-COPY --from=builder /go/src/github.com/eduardohoraciosanto/bootcamp-feature-driven/cmd/api/service /
+COPY --from=builder /go/src/github.com/eduardohoraciosanto/bootcamp-feature-driven/service /
 COPY --from=builder /go/src/github.com/eduardohoraciosanto/bootcamp-feature-driven/swagger /swagger
 
 ENTRYPOINT [ "./service" ]

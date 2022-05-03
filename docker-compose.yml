@@ -13,7 +13,7 @@ services:
             - ./:/go/src/github.com/eduardohoraciosanto/bootcamp-feature-driven
             - swagger:/go/src/github.com/eduardohoraciosanto/bootcamp-feature-driven/swagger
             - ./oas/oas.yml:/go/src/github.com/eduardohoraciosanto/bootcamp-feature-driven/swagger/swagger.yml
-        command: gowatch -p ./cmd/api
+        command: gowatch
         depends_on:
             - redis
             - swagger

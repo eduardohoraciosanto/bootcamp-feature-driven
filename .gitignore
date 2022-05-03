@@ -2,3 +2,4 @@
 .env
 bootcamp-feature-driven
 coverage.out
+go.sum
