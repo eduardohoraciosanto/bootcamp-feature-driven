@@ -16,7 +16,7 @@ import (
 func TestHealthOK(t *testing.T) {
 
 	svc := item.NewExternalService(
-		logger.NewLogger("item unit test"),
+		logger.NewLogger("item unit test", false),
 		&itemClientMock{
 			shouldFail: false,
 			response: item.ExternalHealthResponse{
@@ -39,7 +39,7 @@ func TestHealthOK(t *testing.T) {
 func TestHealthStatusIncorrect(t *testing.T) {
 
 	svc := item.NewExternalService(
-		logger.NewLogger("item unit test"),
+		logger.NewLogger("item unit test", false),
 		&itemClientMock{
 			shouldFail: false,
 			response: item.ExternalHealthResponse{
@@ -61,7 +61,7 @@ func TestHealthStatusIncorrect(t *testing.T) {
 func TestHealthError(t *testing.T) {
 
 	svc := item.NewExternalService(
-		logger.NewLogger("item unit test"),
+		logger.NewLogger("item unit test", false),
 		&itemClientMock{
 			shouldFail: true,
 			response:   nil,
@@ -76,7 +76,7 @@ func TestHealthError(t *testing.T) {
 func TestHealthDecodingError(t *testing.T) {
 
 	svc := item.NewExternalService(
-		logger.NewLogger("item unit test"),
+		logger.NewLogger("item unit test", false),
 		&itemClientMock{
 			shouldFail: false,
 			response:   "notAJSON",
@@ -92,7 +92,7 @@ func TestHealthDecodingError(t *testing.T) {
 func TestGetItem(t *testing.T) {
 
 	svc := item.NewExternalService(
-		logger.NewLogger("item unit test"),
+		logger.NewLogger("item unit test", false),
 		&itemClientMock{
 			shouldFail: false,
 			response: item.ExternalGetItemResponse{
@@ -116,7 +116,7 @@ func TestGetItem(t *testing.T) {
 func TestGetItemNotFound(t *testing.T) {
 
 	svc := item.NewExternalService(
-		logger.NewLogger("item unit test"),
+		logger.NewLogger("item unit test", false),
 		&itemClientMock{
 			shouldFail:         false,
 			response:           nil,
@@ -132,7 +132,7 @@ func TestGetItemNotFound(t *testing.T) {
 func TestGetItemApiFailure(t *testing.T) {
 
 	svc := item.NewExternalService(
-		logger.NewLogger("item unit test"),
+		logger.NewLogger("item unit test", false),
 		&itemClientMock{
 			shouldFail: true,
 			response:   nil,
@@ -147,7 +147,7 @@ func TestGetItemApiFailure(t *testing.T) {
 func TestGetItemWrongResponse(t *testing.T) {
 
 	svc := item.NewExternalService(
-		logger.NewLogger("item unit test"),
+		logger.NewLogger("item unit test", false),
 		&itemClientMock{
 			shouldFail: false,
 			response:   "WrongResponse",
@@ -162,7 +162,7 @@ func TestGetItemWrongResponse(t *testing.T) {
 func TestGetItemFloatParseError(t *testing.T) {
 
 	svc := item.NewExternalService(
-		logger.NewLogger("item unit test"),
+		logger.NewLogger("item unit test", false),
 		&itemClientMock{
 			shouldFail: false,
 			response: item.ExternalGetItemResponse{
@@ -187,7 +187,7 @@ func TestGetItemFloatParseError(t *testing.T) {
 func TestGetAllItems(t *testing.T) {
 
 	svc := item.NewExternalService(
-		logger.NewLogger("item unit test"),
+		logger.NewLogger("item unit test", false),
 		&itemClientMock{
 			shouldFail: false,
 			response: item.ExternalGetAllItemsResponse{
@@ -213,7 +213,7 @@ func TestGetAllItems(t *testing.T) {
 func TestGetAllItemsApiFailure(t *testing.T) {
 
 	svc := item.NewExternalService(
-		logger.NewLogger("item unit test"),
+		logger.NewLogger("item unit test", false),
 		&itemClientMock{
 			shouldFail: true,
 			response:   nil,
@@ -228,7 +228,7 @@ func TestGetAllItemsApiFailure(t *testing.T) {
 func TestGetAllItemsWrongResponse(t *testing.T) {
 
 	svc := item.NewExternalService(
-		logger.NewLogger("item unit test"),
+		logger.NewLogger("item unit test", false),
 		&itemClientMock{
 			shouldFail: false,
 			response:   "WrongResponse",
@@ -243,7 +243,7 @@ func TestGetAllItemsWrongResponse(t *testing.T) {
 func TestGetAllItemsFloatParseError(t *testing.T) {
 
 	svc := item.NewExternalService(
-		logger.NewLogger("item unit test"),
+		logger.NewLogger("item unit test", false),
 		&itemClientMock{
 			shouldFail: false,
 			response: item.ExternalGetAllItemsResponse{

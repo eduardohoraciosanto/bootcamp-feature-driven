@@ -8,22 +8,25 @@ import (
 var serviceVersion = "local"
 
 const (
-	redisServerKey   = "REDIS_SERVER"
-	redisPasswordKey = "REDIS_PASSWORD"
-	port             = "HTTP_PORT"
+	redisServerKey    = "REDIS_SERVER"
+	redisPasswordKey  = "REDIS_PASSWORD"
+	port              = "HTTP_PORT"
+	tracingEnabledKey = "TRACING_ENABLED"
 )
 
 type Config struct {
-	RedisServer   string
-	RedisPassword string
-	Port          string
+	RedisServer    string
+	RedisPassword  string
+	Port           string
+	TracingEnabled bool
 }
 
 func New() Config {
 	return Config{
-		RedisServer:   GetEnvString(redisServerKey, ""),
-		RedisPassword: GetEnvString(redisPasswordKey, ""),
-		Port:          GetEnvString(port, "8080"),
+		RedisServer:    GetEnvString(redisServerKey, ""),
+		RedisPassword:  GetEnvString(redisPasswordKey, ""),
+		Port:           GetEnvString(port, "8080"),
+		TracingEnabled: GetEnvBool(tracingEnabledKey, false),
 	}
 }
 

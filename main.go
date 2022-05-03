@@ -20,12 +20,14 @@ import (
 )
 
 func main() {
-	tracer.Start()
-	defer tracer.Stop()
-
 	conf := config.New()
 
-	l := logger.NewLogger("shopping cart api")
+	if conf.TracingEnabled {
+		tracer.Start()
+		defer tracer.Stop()
+	}
+
+	l := logger.NewLogger("shopping cart api", conf.TracingEnabled)
 
 	redisClient := redis.NewClient(&redis.Options{
 		Addr:     conf.RedisServer,
@@ -65,12 +67,14 @@ func main() {
 		IdleTimeout:  time.Second * 60,
 		Handler:      httpTransportRouter,
 	}
+
 	l.WithField(
 		"transport", "http").
 		WithField(
 			"port", conf.Port).
 		Info(context.Background(), "Transport Start")
-	// Run our server in a goroutine so that it doesn't block.
+
+		// Run our server in a goroutine so that it doesn't block.
 	go func() {
 		if err := srv.ListenAndServe(); err != nil {
 			l.WithField(

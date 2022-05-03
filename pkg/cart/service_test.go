@@ -12,7 +12,7 @@ import (
 
 func TestCreateCartOK(t *testing.T) {
 	svc := cart.NewCartService("unit-testing",
-		logger.NewLogger("cart service unit testing"),
+		logger.NewLogger("cart service unit testing", false),
 		&cacheMock{},
 		&externalMock{
 			shouldFail: false,
@@ -27,7 +27,7 @@ func TestCreateCartOK(t *testing.T) {
 
 func TestCreateCartCacheFail(t *testing.T) {
 	svc := cart.NewCartService("unit-testing",
-		logger.NewLogger("cart service unit testing"),
+		logger.NewLogger("cart service unit testing", false),
 		&cacheMock{
 			shouldSetFail: true,
 		},
@@ -44,7 +44,7 @@ func TestCreateCartCacheFail(t *testing.T) {
 
 func TestGetCartOK(t *testing.T) {
 	svc := cart.NewCartService("unit-testing",
-		logger.NewLogger("cart service unit testing"),
+		logger.NewLogger("cart service unit testing", false),
 		&cacheMock{},
 		&externalMock{
 			shouldFail: false,
@@ -59,7 +59,7 @@ func TestGetCartOK(t *testing.T) {
 
 func TestGetCartCacheFail(t *testing.T) {
 	svc := cart.NewCartService("unit-testing",
-		logger.NewLogger("cart service unit testing"),
+		logger.NewLogger("cart service unit testing", false),
 		&cacheMock{
 			shouldGetFail: true,
 		},
@@ -76,7 +76,7 @@ func TestGetCartCacheFail(t *testing.T) {
 
 func TestGetCartExternalFail(t *testing.T) {
 	svc := cart.NewCartService("unit-testing",
-		logger.NewLogger("cart service unit testing"),
+		logger.NewLogger("cart service unit testing", false),
 		&cacheMock{},
 		&externalMock{
 			shouldFail: true,
@@ -91,7 +91,7 @@ func TestGetCartExternalFail(t *testing.T) {
 
 func TestGetAvailableItemsOK(t *testing.T) {
 	svc := cart.NewCartService("unit-testing",
-		logger.NewLogger("cart service unit testing"),
+		logger.NewLogger("cart service unit testing", false),
 		&cacheMock{},
 		&externalMock{
 			shouldFail: false,
@@ -106,7 +106,7 @@ func TestGetAvailableItemsOK(t *testing.T) {
 
 func TestGetAvailableItemsExternalFailure(t *testing.T) {
 	svc := cart.NewCartService("unit-testing",
-		logger.NewLogger("cart service unit testing"),
+		logger.NewLogger("cart service unit testing", false),
 		&cacheMock{},
 		&externalMock{
 			shouldFail: true,
@@ -121,7 +121,7 @@ func TestGetAvailableItemsExternalFailure(t *testing.T) {
 
 func TestGetItemOK(t *testing.T) {
 	svc := cart.NewCartService("unit-testing",
-		logger.NewLogger("cart service unit testing"),
+		logger.NewLogger("cart service unit testing", false),
 		&cacheMock{},
 		&externalMock{
 			shouldFail: false,
@@ -136,7 +136,7 @@ func TestGetItemOK(t *testing.T) {
 
 func TestGetItemExternalFailure(t *testing.T) {
 	svc := cart.NewCartService("unit-testing",
-		logger.NewLogger("cart service unit testing"),
+		logger.NewLogger("cart service unit testing", false),
 		&cacheMock{},
 		&externalMock{
 			shouldFail: true,
@@ -151,7 +151,7 @@ func TestGetItemExternalFailure(t *testing.T) {
 
 func TestAddItemToCartOK(t *testing.T) {
 	svc := cart.NewCartService("unit-testing",
-		logger.NewLogger("cart service unit testing"),
+		logger.NewLogger("cart service unit testing", false),
 		&cacheMock{},
 		&externalMock{
 			shouldFail: false,
@@ -166,7 +166,7 @@ func TestAddItemToCartOK(t *testing.T) {
 
 func TestAddItemToCartFailItemAlreadyAdded(t *testing.T) {
 	svc := cart.NewCartService("unit-testing",
-		logger.NewLogger("cart service unit testing"),
+		logger.NewLogger("cart service unit testing", false),
 		&cacheMock{},
 		&externalMock{
 			shouldFail: false,
@@ -181,7 +181,7 @@ func TestAddItemToCartFailItemAlreadyAdded(t *testing.T) {
 
 func TestAddItemToCartCacheFailureGet(t *testing.T) {
 	svc := cart.NewCartService("unit-testing",
-		logger.NewLogger("cart service unit testing"),
+		logger.NewLogger("cart service unit testing", false),
 		&cacheMock{
 			shouldGetFail: true,
 		},
@@ -198,7 +198,7 @@ func TestAddItemToCartCacheFailureGet(t *testing.T) {
 
 func TestAddItemToCartCacheFailureSet(t *testing.T) {
 	svc := cart.NewCartService("unit-testing",
-		logger.NewLogger("cart service unit testing"),
+		logger.NewLogger("cart service unit testing", false),
 		&cacheMock{
 			shouldSetFail: true,
 		},
@@ -215,7 +215,7 @@ func TestAddItemToCartCacheFailureSet(t *testing.T) {
 
 func TestAddItemToCartExternalFailure(t *testing.T) {
 	svc := cart.NewCartService("unit-testing",
-		logger.NewLogger("cart service unit testing"),
+		logger.NewLogger("cart service unit testing", false),
 		&cacheMock{},
 		&externalMock{
 			shouldFail: true,
@@ -230,7 +230,7 @@ func TestAddItemToCartExternalFailure(t *testing.T) {
 
 func TestModifyItemInCartOK(t *testing.T) {
 	svc := cart.NewCartService("unit-testing",
-		logger.NewLogger("cart service unit testing"),
+		logger.NewLogger("cart service unit testing", false),
 		&cacheMock{},
 		&externalMock{
 			shouldFail: false,
@@ -245,7 +245,7 @@ func TestModifyItemInCartOK(t *testing.T) {
 
 func TestModifyItemInCartItemNotFound(t *testing.T) {
 	svc := cart.NewCartService("unit-testing",
-		logger.NewLogger("cart service unit testing"),
+		logger.NewLogger("cart service unit testing", false),
 		&cacheMock{},
 		&externalMock{
 			shouldFail: false,
@@ -260,7 +260,7 @@ func TestModifyItemInCartItemNotFound(t *testing.T) {
 
 func TestModifyItemInCartCacheGetFailure(t *testing.T) {
 	svc := cart.NewCartService("unit-testing",
-		logger.NewLogger("cart service unit testing"),
+		logger.NewLogger("cart service unit testing", false),
 		&cacheMock{
 			shouldGetFail: true,
 		},
@@ -277,7 +277,7 @@ func TestModifyItemInCartCacheGetFailure(t *testing.T) {
 
 func TestModifyItemInCartCacheSetFailure(t *testing.T) {
 	svc := cart.NewCartService("unit-testing",
-		logger.NewLogger("cart service unit testing"),
+		logger.NewLogger("cart service unit testing", false),
 		&cacheMock{
 			shouldSetFail: true,
 		},
@@ -294,7 +294,7 @@ func TestModifyItemInCartCacheSetFailure(t *testing.T) {
 
 func TestModifyItemInCartExternalFailure(t *testing.T) {
 	svc := cart.NewCartService("unit-testing",
-		logger.NewLogger("cart service unit testing"),
+		logger.NewLogger("cart service unit testing", false),
 		&cacheMock{},
 		&externalMock{
 			shouldFail: true,
@@ -309,7 +309,7 @@ func TestModifyItemInCartExternalFailure(t *testing.T) {
 
 func TestDeleteItemInCartOK(t *testing.T) {
 	svc := cart.NewCartService("unit-testing",
-		logger.NewLogger("cart service unit testing"),
+		logger.NewLogger("cart service unit testing", false),
 		&cacheMock{},
 		&externalMock{
 			shouldFail: false,
@@ -324,7 +324,7 @@ func TestDeleteItemInCartOK(t *testing.T) {
 
 func TestDeleteItemInCartItemNotFound(t *testing.T) {
 	svc := cart.NewCartService("unit-testing",
-		logger.NewLogger("cart service unit testing"),
+		logger.NewLogger("cart service unit testing", false),
 		&cacheMock{},
 		&externalMock{
 			shouldFail: false,
@@ -339,7 +339,7 @@ func TestDeleteItemInCartItemNotFound(t *testing.T) {
 
 func TestDeleteItemInCartCacheGetFailure(t *testing.T) {
 	svc := cart.NewCartService("unit-testing",
-		logger.NewLogger("cart service unit testing"),
+		logger.NewLogger("cart service unit testing", false),
 		&cacheMock{
 			shouldGetFail: true,
 		},
@@ -356,7 +356,7 @@ func TestDeleteItemInCartCacheGetFailure(t *testing.T) {
 
 func TestDeleteItemInCartCacheSetFailure(t *testing.T) {
 	svc := cart.NewCartService("unit-testing",
-		logger.NewLogger("cart service unit testing"),
+		logger.NewLogger("cart service unit testing", false),
 		&cacheMock{
 			shouldSetFail: true,
 		},
@@ -373,7 +373,7 @@ func TestDeleteItemInCartCacheSetFailure(t *testing.T) {
 
 func TestDeleteItemInCartExternalFailure(t *testing.T) {
 	svc := cart.NewCartService("unit-testing",
-		logger.NewLogger("cart service unit testing"),
+		logger.NewLogger("cart service unit testing", false),
 		&cacheMock{},
 		&externalMock{
 			shouldFail: true,
@@ -388,7 +388,7 @@ func TestDeleteItemInCartExternalFailure(t *testing.T) {
 
 func TestDeleteAllItemsInCartOK(t *testing.T) {
 	svc := cart.NewCartService("unit-testing",
-		logger.NewLogger("cart service unit testing"),
+		logger.NewLogger("cart service unit testing", false),
 		&cacheMock{},
 		&externalMock{
 			shouldFail: false,
@@ -403,7 +403,7 @@ func TestDeleteAllItemsInCartOK(t *testing.T) {
 
 func TestDeleteAllItemsInCartCacheGetFailure(t *testing.T) {
 	svc := cart.NewCartService("unit-testing",
-		logger.NewLogger("cart service unit testing"),
+		logger.NewLogger("cart service unit testing", false),
 		&cacheMock{
 			shouldGetFail: true,
 		},
@@ -420,7 +420,7 @@ func TestDeleteAllItemsInCartCacheGetFailure(t *testing.T) {
 
 func TestDeleteAllItemsInCartCacheSetFailure(t *testing.T) {
 	svc := cart.NewCartService("unit-testing",
-		logger.NewLogger("cart service unit testing"),
+		logger.NewLogger("cart service unit testing", false),
 		&cacheMock{
 			shouldSetFail: true,
 		},
@@ -437,7 +437,7 @@ func TestDeleteAllItemsInCartCacheSetFailure(t *testing.T) {
 
 func TestDeleteCartOK(t *testing.T) {
 	svc := cart.NewCartService("unit-testing",
-		logger.NewLogger("cart service unit testing"),
+		logger.NewLogger("cart service unit testing", false),
 		&cacheMock{},
 		&externalMock{
 			shouldFail: false,
@@ -452,7 +452,7 @@ func TestDeleteCartOK(t *testing.T) {
 
 func TestDeleteCartCacheFailure(t *testing.T) {
 	svc := cart.NewCartService("unit-testing",
-		logger.NewLogger("cart service unit testing"),
+		logger.NewLogger("cart service unit testing", false),
 		&cacheMock{
 			shouldDelFail: true,
 		},

@@ -13,7 +13,7 @@ func TestHealthCheck(t *testing.T) {
 	service := NewService(
 		&cacheMocked{cacheShouldFail: false},
 		&externalAPIMocked{externalAPIShouldFail: false},
-		logger.NewLogger("health svc unit test"),
+		logger.NewLogger("health svc unit test", false),
 	)
 	s, e, d, err := service.HealthCheck(context.TODO())
 	if s != true || e != true || d != true || err != nil {
@@ -25,7 +25,7 @@ func TestHealthCheck_CacheFail(t *testing.T) {
 	service := NewService(
 		&cacheMocked{cacheShouldFail: true},
 		&externalAPIMocked{externalAPIShouldFail: false},
-		logger.NewLogger("health svc unit test"),
+		logger.NewLogger("health svc unit test", false),
 	)
 
 	s, e, d, err := service.HealthCheck(context.TODO())
@@ -38,7 +38,7 @@ func TestHealthCheck_ExternalFail(t *testing.T) {
 	service := NewService(
 		&cacheMocked{cacheShouldFail: false},
 		&externalAPIMocked{externalAPIShouldFail: true},
-		logger.NewLogger("health svc unit test"),
+		logger.NewLogger("health svc unit test", false),
 	)
 
 	s, e, d, err := service.HealthCheck(context.TODO())

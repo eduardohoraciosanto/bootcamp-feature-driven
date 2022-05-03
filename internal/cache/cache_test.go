@@ -11,7 +11,7 @@ import (
 	"github.com/go-redis/redismock/v8"
 )
 
-var testLogger = logger.NewLogger("redis mock")
+var testLogger = logger.NewLogger("redis mock", false)
 
 func TestSetOK(t *testing.T) {
 	db, mock := redismock.NewClientMock()
